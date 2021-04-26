@@ -1,9 +1,5 @@
 #include "get_next_line.h"
 
-/*
-** Responsável por zerar os caracteres da string
-*/
-
 void	ft_bzero(char *str)
 {
 	int	i;
@@ -19,10 +15,6 @@ void	ft_bzero(char *str)
 	}
 }
 
-/*
-** Responsável por contar os caracteres da string
-*/
-
 size_t	ft_strlen(char *str)
 {
 	int	i;
@@ -35,10 +27,6 @@ size_t	ft_strlen(char *str)
 	}
 	return (i);
 }
-
-/*
-** Responsável por alocar espaço de memória e zerar os caracteres
-*/
 
 char	*ft_calloc(size_t count, size_t size)
 {
@@ -59,10 +47,6 @@ char	*ft_calloc(size_t count, size_t size)
 	}
 	return (str);
 }
-
-/*
-** Responsável por copiar uma substring da string passada como parâmetro
-*/
 
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 {
