@@ -1,68 +1,106 @@
 #include "get_next_line.h"
 
-void	ft_bzero(char *str)
+int		ft_strlen(char *str)
 {
-	int	i;
+	int i;
 
+	if (!str)
+		return (0);
 	i = 0;
-	if (str)
-	{
-		while (i < BUFFER_SIZE && i < 1000000)
-		{
-			str[i] = '\0';
-			i++;
-		}
-	}
-}
-
-size_t	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str)
-	{
-		while (str[i] != '\0')
-			i++;
-	}
+	while (str[i])
+		i++;
 	return (i);
 }
 
-char	*ft_calloc(size_t count, size_t size)
+int		ft_is_break_line(char *str)
 {
-	char		*str;
-	size_t		i;
+	int i;
 
-	if (count > 1000000)
-		count = 1000000;
-	str = (char *)malloc(count * size);
 	i = 0;
-	if (str)
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		while (i < count)
-		{
-			str[i] = '\0';
-			i++;
-		}
+		if (str[i] == '\n')
+			return (1);
+		i++;
 	}
-	return (str);
+	return (0);
 }
 
-size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	i;
+	int		i;
+	int		j;
+	int		all_len;
+	char	*res;
 
-	if (src == 0)
-		return (0);
-	if (dstsize > 0)
+	if (!s1 && !s2)
+		return (NULL);
+	i = 0;
+	j = 0;
+	all_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	res = malloc(sizeof(char) * all_len);
+	if (!(res))
+		return (NULL);
+	while (s1 && s1[i])
 	{
-		i = 0;
-		while (src[i] != '\0' && i < (dstsize - 1))
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
+		res[i] = s1[i];
+		i++;
 	}
-	return (ft_strlen(src));
+	while (s2 && s2[j])
+	{
+		res[i + j] = s2[j];
+		j++;
+	}
+	res[i + j] = '\0';
+	ft_free(s1);
+	return (res);
+}
+
+char	*ft_get_line(char *str)
+{
+	int		i;
+	char	*res;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	res = malloc(sizeof(char) * i + 1);
+	if (!(res))
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+
+char	*ft_get_temp(char *str)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	res = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	if (!(res))
+		return (NULL);
+	if (i < ft_strlen(str))
+		i++;
+	while (str[i])
+		res[j++] = str[i++];
+	res[j] = '\0';
+	ft_free(str);
+	return (res);
 }
