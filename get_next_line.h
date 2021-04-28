@@ -6,9 +6,9 @@
 # include <fcntl.h>
 
 int		get_next_line(int fd, char **line);
-int		newline(char *s_line);
-char	*ft_strjoin(char *s1, char *s2);
-char	*cleanline(char **line, char *s_line, int index_newline);
+int		new_line(char *s_line);
+char	*strjoin(char *s1, char *s2);
+char	*lineclean(char **line, char *s_line, int index_newline);
 size_t	ft_strlen(char *str);
 void	ft_bzero(char *str);
 char	*ft_calloc(size_t count, size_t size);

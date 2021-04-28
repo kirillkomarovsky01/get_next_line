@@ -1,38 +1,10 @@
 #include "get_next_line.h"
 
-int		get_next_line(int fd, char **line)
+char	*strjoin(char *s1, char *s2)
 {
-	static char		*s_line;
-	char			*l_buffer;
-	register int	result;
-
-	if (!line || fd < 0 || BUFFER_SIZE < 1)
-		return (-1);
-	result = 1;
-	*line = NULL;
-	l_buffer = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!s_line)
-		s_line = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	while (newline(s_line) == -1 && result >= 1 && result <= BUFFER_SIZE)
-	{
-		result = read(fd, l_buffer, BUFFER_SIZE);
-		if (result >= 1 && result <= BUFFER_SIZE && s_line)
-			s_line = ft_strjoin(s_line, l_buffer);
-		ft_bzero(l_buffer);
-	}
-	if (result >= 0 && result <= BUFFER_SIZE)
-		s_line = cleanline(line, s_line, newline(s_line));
-	free(l_buffer);
-	if (result >= 1 && result <= BUFFER_SIZE)
-		return (1);
-	return (result == 0 ? 0 : -1);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char			*str;
-	register int	i;
-	register int	j;
+	char	*str;
+	int	i;
+	int	j;
 
 	i = ft_strlen(s1);
 	j = ft_strlen(s2);
@@ -53,40 +25,70 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-char	*cleanline(char **line, char *s_line, int j)
+char	*lineclean(char **line, char *line_s, int j)
 {
-	char	*l_temp;
+	char	*temp;
 
 	if (j >= 0)
 	{
-		s_line[j] = '\0';
-		*line = (char*)ft_calloc(ft_strlen(s_line) + 1, sizeof(char));
-		l_temp = (char*)ft_calloc(ft_strlen(&s_line[j + 1]) + 1, sizeof(char));
-		ft_strlcpy(*line, s_line, ft_strlen(s_line) + 1);
-		ft_strlcpy(l_temp, &s_line[j + 1], ft_strlen(&s_line[j + 1]) + 1);
-		free(s_line);
-		s_line = NULL;
-		return (l_temp);
+		line_s[j] = '\0';
+		*line = (char*)ft_calloc(ft_strlen(line_s) + 1, sizeof(char));
+		temp = (char*)ft_calloc(ft_strlen(&line_s[j + 1]) + 1, sizeof(char));
+		ft_strlcpy(*line, line_s, ft_strlen(line_s) + 1);
+		ft_strlcpy(temp, &line_s[j + 1], ft_strlen(&line_s[j + 1]) + 1);
+		free(line_s);
+		line_s = NULL;
+		return (temp);
 	}
-	*line = (char*)ft_calloc(ft_strlen(s_line) + 1, sizeof(char));
-	ft_strlcpy(*line, s_line, ft_strlen(s_line) + 1);
-	free(s_line);
-	s_line = NULL;
-	return (s_line);
+	*line = (char*)ft_calloc(ft_strlen(line_s) + 1, sizeof(char));
+	ft_strlcpy(*line, line_s, ft_strlen(line_s) + 1);
+	free(line_s);
+	line_s = NULL;
+	return (line_s);
 }
 
-int		newline(char *s_line)
+int		new_line(char *line_s)
 {
 	int	i;
 
 	i = 0;
-	if (!s_line)
+	if (!line_s)
 		return (-1);
-	while (s_line[i])
+	while (line_s[i])
 	{
-		if (s_line[i] == '\n')
+		if (line_s[i] == '\n')
 			return (i);
 		i++;
 	}
+	return (-1);
+}
+
+int             get_next_line(int fd, char **line)
+{
+        static char             *line_s;
+        char                    *buff;
+        int    result;
+
+        if (!line || fd < 0 || BUFFER_SIZE < 1)
+                return (-1);
+        result = 1;
+        *line = NULL;
+        buff = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+        if (!line_s)
+                line_s = (char *)ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+        while (result >= 1 && result <= BUFFER_SIZE && new_line(line_s) == -1)
+        {
+             	result = read(fd, buff, BUFFER_SIZE);
+                if (result >= 1 && result <= BUFFER_SIZE && line_s)
+                        line_s = strjoin(line_s, buff);
+                ft_bzero(buff);
+        }
+        if (result >= 0 && result <= BUFFER_SIZE)
+                line_s = lineclean(line, line_s, new_line(line_s));
+        free(buff);
+        if (result >= 1 && result <= BUFFER_SIZE)
+       		 return (1);
+        if (result == 0)
+		return (0);
 	return (-1);
 }
