@@ -1,20 +1,14 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
-
-# include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
+# include <unistd.h>
 
-int		get_next_line(int fd, char **line);
-char	*get_tmp(char *str);
-char	*get_line(char *str);
-char	*ft_strjoin(char *s1, char *s2);
-int		break_line(char *str);
-int		ft_strlen(char *str);
-int		ft_free(char *str);
-
+int	clean_all(char **line, char **tail, int *t);
+int	from_tail(char **line, char **tail, int *t);
+int	add_buf(char **str, char *buf);
+int	buf_malloc(char **buf, size_t size);
+int	get_new_heap(char **line, char **tail, int fd);
+int	get_new(char **line, char **tail, int fd);
+int	get_next_line(int fd, char **line);
 #endif
