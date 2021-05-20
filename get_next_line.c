@@ -1,28 +1,28 @@
 #include "get_next_line.h"
 
-int	from_tail(char **line, char **tail, int *t)
+int	from_tail(char **line, char **tail, int *index)
 {
 	int i;
 	int j;
 
 	if (!(*tail))
 		return (0);
-	i = *t;
+	i = *index;
 	while ((*tail)[i] && (*tail)[i] != '\n')
 		i++;
-	*line = malloc(i - *t + 1);
+	*line = malloc(i - *index + 1);
 	if (!(*line))
 		return (-1);
 	j = 0;
-	while (*t < i)
-		(*line)[j++] = (*tail)[(*t)++];
+	while (*index < i)
+		(*line)[j++] = (*tail)[(*index)++];
 	(*line)[j] = 0;
-	if ((*tail)[*t] == '\n')
+	if ((*tail)[*index] == '\n')
 	{
-		(*t)++;
+		(*index)++;
 		return (1);
 	}
-	*t = 0;
+	*index = 0;
 	free(*tail);
 	*tail = NULL;
 	return (0);
@@ -43,7 +43,7 @@ int	add_buf(char **str, char *buf)
 	tmp = malloc (i + j + 1);
 	if (!tmp)
 		return (-1);
-	tmp[i + j] = 0;
+	tmp[i + j] = '\0';
 	while (j-- > 0)
 		tmp[i + j] = buf[j];
 	while (*str && i-- > 0)
@@ -54,7 +54,7 @@ int	add_buf(char **str, char *buf)
 	return (0);
 }
 
-int	get_new_heap(char **line, char **tail, int fd)
+int	new_heap(char **line, char **tail, int fd)
 {
 	char	*buf;
 	ssize_t	i;
@@ -69,12 +69,12 @@ int	get_new_heap(char **line, char **tail, int fd)
 		i = 0;
 		while (i < r && buf[i] != '\n')
 			i++;
-		buf[i] = 0;
+		buf[i] = '\0';
 		if (r < 0 || add_buf(line, buf))
 			return (clean_all(&buf, &buf, &fd));
 		if (i < r)
 		{
-			buf[r] = 0;
+			buf[r] = '\0';
 			if (add_buf(tail, &buf[i + 1]))
 				return (clean_all(&buf, &buf, &fd));
 		}
@@ -96,12 +96,12 @@ int    get_new(char **line, char **tail, int fd)
         i = 0;
         while (i < r && buf[i] != '\n')
             i++;
-        buf[i] = 0;
+        buf[i] = '\0';
         if (r < 0 || add_buf(line, buf))
             return (-1);
         if (i < r)
         {
-            buf[r] = 0;
+            buf[r] = '\0';
             if (add_buf(tail, &buf[i + 1]))
                 return (-1);
         }
@@ -111,24 +111,24 @@ int    get_new(char **line, char **tail, int fd)
 
 int	get_next_line(int fd, char **line)
 {
-    static int    t;
+    static int    index;
 	static char	*tail;
-	int		n;
+	int		k;
 
 	if (BUFFER_SIZE <= 0 || fd < 0 || !line)
 		return (-1);
 	*line = NULL;
-	n = from_tail(line, &tail, &t);
-	if (n == 1)
+	k = from_tail(line, &tail, &index);
+	if (k == 1)
 		return (1);
-	if (n == -1)
-		return (clean_all(line, &tail, &t));
+	if (k == -1)
+		return (clean_all(line, &tail, &index));
 	if (BUFFER_SIZE > 4096)
-		n = get_new_heap(line, &tail, fd);
+		k = new_heap(line, &tail, fd);
 	else
-		n = get_new(line, &tail, fd);
-	if (n)
-		return (clean_all(line, &tail, &t));
+		k = get_new(line, &tail, fd);
+	if (k)
+		return (clean_all(line, &tail, &index));
 	if (!tail)
 		return (0);
 	return (1);

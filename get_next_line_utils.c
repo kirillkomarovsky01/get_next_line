@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int    clean_all(char **line, char **tail, int *t)
+int    clean_all(char **line, char **tail, int *index)
 {
     if (*line)
     {
@@ -12,7 +12,7 @@ int    clean_all(char **line, char **tail, int *t)
         free(*tail);
         *tail = NULL;
     }
-    *t = 0;
+    *index = 0;
     return (-1);
 }
 
