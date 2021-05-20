@@ -4,11 +4,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-int	clean_all(char **line, char **tail, int *t);
-int	from_tail(char **line, char **tail, int *t);
+int	clean_all(char **line, char **tail, int *index);
+int	from_tail(char **line, char **tail, int *index);
 int	add_buf(char **str, char *buf);
 int	buf_malloc(char **buf, size_t size);
-int	get_new_heap(char **line, char **tail, int fd);
+int	new_heap(char **line, char **tail, int fd);
 int	get_new(char **line, char **tail, int fd);
 int	get_next_line(int fd, char **line);
 #endif
