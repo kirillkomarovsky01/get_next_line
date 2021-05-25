@@ -85,28 +85,28 @@ int	new_heap(char **line, char **tail, int fd)
 
 int    get_new(char **line, char **tail, int fd)
 {
-    ssize_t i;
-    ssize_t r;
-    char    buf[BUFFER_SIZE + 1];
+	ssize_t i;
+	ssize_t r;
+	char    buf[BUFFER_SIZE + 1];
 
-    i = BUFFER_SIZE;
-    while (i == BUFFER_SIZE && BUFFER_SIZE > 0)
-    {
-        r = read(fd, buf, BUFFER_SIZE);
-        i = 0;
-        while (i < r && buf[i] != '\n')
-            i++;
-        buf[i] = '\0';
-        if (r < 0 || add_buf(line, buf))
-            return (-1);
-        if (i < r)
-        {
-            buf[r] = '\0';
-            if (add_buf(tail, &buf[i + 1]))
-                return (-1);
-        }
-    }
-    return (0);
+	i = BUFFER_SIZE;
+	while (i == BUFFER_SIZE && BUFFER_SIZE > 0)
+	{
+		r = read(fd, buf, BUFFER_SIZE);
+		i = 0;
+		while (i < r && buf[i] != '\n')
+		i++;
+		buf[i] = '\0';
+		if (r < 0 || add_buf(line, buf))
+			return (-1);
+		if (i < r)
+		{
+			buf[r] = '\0';
+			if (add_buf(tail, &buf[i + 1]))
+				return (-1);
+		}
+	}
+	return (0);
 }
 
 int	get_next_line(int fd, char **line)
@@ -127,7 +127,7 @@ int	get_next_line(int fd, char **line)
 		k = new_heap(line, &tail, fd);
 	else
 		k = get_new(line, &tail, fd);
-	if (k)
+	if (k != 0)
 		return (clean_all(line, &tail, &index));
 	if (!tail)
 		return (0);
