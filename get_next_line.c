@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int	from_tail(char **line, char **tail, int *index)
+int from_tail(char **line, char **tail, int *index)
 {
 	int i;
 	int j;
