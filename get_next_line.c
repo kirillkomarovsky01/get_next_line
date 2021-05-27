@@ -28,7 +28,7 @@ int from_tail(char **line, char **tail, int *index)
 	return (0);
 }
 
-int	add_buf(char **str, char *buf)
+int add_buf(char **str, char *buf)
 {
 	char	*tmp;
 	ssize_t	i;
