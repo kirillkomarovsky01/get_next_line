@@ -2,18 +2,18 @@
 
 int    clean_all(char **line, char **tail, int *index)
 {
-    if (*line)
-    {
-        free(*line);
-        *line = NULL;
-    }
-    if (*tail)
-    {
-        free(*tail);
-        *tail = NULL;
-    }
-    *index = 0;
-    return (-1);
+	if (*line)
+	{
+		free(*line);
+		*line = NULL;
+	}
+	if (*tail)
+	{
+		free(*tail);
+		*tail = NULL;
+	}
+	*index = 0;
+	return (-1);
 }
 
 int	buf_malloc(char **buf, size_t size)
