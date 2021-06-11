@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int	clean_all(char **line, char **tail, int *index)
+int clean_all(char **line, char **tail, int *index)
 {
 	if (*line)
 	{
